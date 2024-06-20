@@ -1,26 +1,37 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import MovieListing from "../MovieListing/MovieListing";
-
 import { useDispatch } from "react-redux";
 import { fetchAsyncMovies, fetchAsyncShows } from "../../features/movies/movieSlice";
+import Loader from "../Loader/Loader"; // Import the Loader component
+
 const Home = () => {
-  
-
   const dispatch = useDispatch();
-  const movieText  = "Harry";
-  const showText = "Friends"
+  const movieText  = "Superman";
+  const showText = "Friends";
+
+  const [loading, setLoading] = useState(true); // State to manage loading
+
   useEffect(() => {
+    const fetchData = async () => {
+      setLoading(true); // Set loading to true before dispatching actions
+      await dispatch(fetchAsyncMovies(movieText));
+      await dispatch(fetchAsyncShows(showText));
+      setLoading(false); // Set loading to false after data is fetched
+    };
 
-    dispatch(fetchAsyncMovies(movieText))
-    dispatch(fetchAsyncShows(showText))
-   
+    fetchData();
+  }, [dispatch, movieText, showText]);
 
-   
-  }, [dispatch]);
   return (
     <div>
-      <div className="banner-img"></div>
-      <MovieListing />
+      {loading ? ( // Conditional rendering based on loading state
+        <Loader />
+      ) : (
+        <>
+          <div className="banner-img"></div>
+          <MovieListing />
+        </>
+      )}
     </div>
   );
 };

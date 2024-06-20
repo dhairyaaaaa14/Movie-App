@@ -8,6 +8,7 @@ import {
 } from "../../features/movies/movieSlice";
 
 import "./MovieDetails.scss"
+import Loader from "../Loader/Loader";
 const MovieDetails = () => {
   const { imdbID } = useParams();
   const dispatch = useDispatch();
@@ -27,7 +28,7 @@ const MovieDetails = () => {
    
     <div className="movie-section">
     {Object.keys(data).length === 0 ? (
-      <div>...Loading</div>
+      <div><Loader /></div>
     ) : (
       <>
         <div className="section-left">
